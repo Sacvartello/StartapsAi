@@ -1,38 +1,49 @@
-.App {
-  text-align: center;
+/* Reset default styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Remove text decorations */
+a {
+  text-decoration: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Set a default font */
+body {
+  font-family: Arial, sans-serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Set background and text color for the body */
+body {
+  background-color: #fff;
+  color: #000;
 }
 
-.App-link {
-  color: #61dafb;
+/* Remove list styles */
+ul, ol {
+  list-style: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Remove border on images */
+img {
+  border: 0;
+}
+
+/* Remove default form styles */
+input,
+button,
+textarea,
+select {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+/* Set default button styles */
+button {
+  cursor: pointer;
 }
