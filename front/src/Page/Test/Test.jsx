@@ -20,7 +20,7 @@ export default function Test() {
 
   // Виконуємо запит лише один раз при завантаженні компонента
   useEffect(() => {
-    fetch('http://localhost:3000/question', {
+    fetch('localhost:5000/api/questioncd ', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
