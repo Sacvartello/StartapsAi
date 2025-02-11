@@ -1,0 +1,12 @@
+const express = require('express');
+const {openai} = require('../routes/rootRouter')
+module.exports.createMessage = async (req, res, next) => {
+    try {
+        const{promt} = req.body
+        const response = await openai.chat.completions.create({messages:[{role:'user',content:`${promt}`}],model:'gpt-4-turbo'})
+        res.send(response.choices[0].message)
+
+    } catch(error) {
+        next(error)
+    }
+}
