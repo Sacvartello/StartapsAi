@@ -14,4 +14,4 @@ const openai = new OpenAi({
 rootRouter.use(cors);
 rootRouter.post('/quetion', createMessage)
 
-module.exports = [rootRouter, openai]
+module.exports = rootRouter, openai
