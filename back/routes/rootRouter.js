@@ -1,7 +1,6 @@
 const express = require('express');
 const rootRouter = express.Router();
-const ideaRouter = require('./ideaRouter')
-const createMessage = require('../controllers/rootControler')
+const {createMessage} = require('../controllers/rootControler')
 const cors = require('cors');
 
 const OpenAi = require('openai')
@@ -12,8 +11,7 @@ const openai = new OpenAi({
     apiKey:process.env['API_KEY']
 })
 
-app.use(cors());
-app.post('/quetion', )
-
+rootRouter.use(cors);
+rootRouter.post('/quetion', createMessage)
 
 module.exports = [rootRouter, openai]
