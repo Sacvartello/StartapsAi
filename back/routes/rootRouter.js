@@ -1,17 +1,28 @@
 const express = require('express');
-const rootRouter = express.Router();
-const {createMessage} = require('../controllers/rootControler')
 const cors = require('cors');
+const dotenv = require('dotenv');
+const OpenAi = require('openai');
+const { createMessage } = require('../controllers/rootControler');
 
-const OpenAi = require('openai')
-const dotenv =require('dotenv')
-dotenv.config()
+dotenv.config();
 
+const rootRouter = express.Router();
+rootRouter.use(cors());
+
+// ✅ Подключаем OpenAI
 const openai = new OpenAi({
-    apiKey:process.env['API_KEY']
-})
+    apiKey: process.env.OPENAI_API_KEY
+});
 
-rootRouter.use(cors);
-rootRouter.post('/quetion', createMessage)
+// ✅ Передаём OpenAI в req
+rootRouter.use((req, res, next) => {
+    req.openai = openai;
+    next();
+});
 
-module.exports = rootRouter, openai
+// ✅ Маршрут для обработки сообщений
+rootRouter.post('/question', createMessage);
+
+console.log('✅ Маршрут /api/question зарегистрирован');
+
+module.exports = rootRouter;
