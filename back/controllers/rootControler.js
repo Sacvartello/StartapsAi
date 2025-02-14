@@ -1,5 +1,6 @@
 const express = require('express');
-
+const googleTrends = require('google-trends-api');
+const searchTerm = 'cybersecurity'; // Тема, яку хочеш перевірити
 module.exports.createMessage = async (req, res, next) => {
     try {
         console.log('Запрос получен');
@@ -23,3 +24,15 @@ module.exports.createMessage = async (req, res, next) => {
         res.status(500).json({ error: 'Ошибка сервера', details: error.message });
     }
 };
+
+module.exports.createTrends =async (req, res,next) =>{
+    googleTrends.interestOverTime({ keyword: searchTerm, geo: 'UA', timeframe: 'today 12-m' })
+        .then((result) => {
+        const data = JSON.parse(result);
+        console.log(`Популярність "${searchTerm}" в Україні за останні 12 місяців:`);
+        console.log(data.default.timelineData);
+    })
+    .catch((err) => {
+        console.error('Помилка:', err);
+    })
+}
