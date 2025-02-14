@@ -1,105 +1,130 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Импортируем useNavigate
+import { setSelectedAnswers } from "../../redux/questionSlice"; // Ваш экшен
 import "./test.css";
 
 export default function Test() {
-  const [otherAnswer, setOtherAnswer] = useState("");
-  const [gptResponse, setGptResponse] = useState(null);
-
-  const handleChange = (e) => {
-    setOtherAnswer(e.target.value);
-  };
-
-  const staticAnswer = [
-    "Технології (штучний інтелект, блокчейн, розробка програмного забезпечення)",
-    "Охорона здоров'я та медичні послуги",
-    "Екологія та сталий розвиток",
-    "Фінансові послуги (фінтех, криптовалюти)",
-    "Не знаю :(",
+  const questions = [
+    {
+      id: 1,
+      text: "У якій сфері ви хочете розпочати свій стартап?",
+      answers: ["Технології", "Медицина", "Фінанси", "Екологія", "Не знаю"],
+    },
+    {
+      id: 2,
+      text: "Які у вас є навички та досвід?",
+      answers: ["Програмування", "Маркетинг", "Фінанси", "Дизайн", "Інше"],
+    },
+    {
+      id: 3,
+      text: "Який рівень ризику вам комфортний?",
+      answers: ["Високий", "Середній", "Низький"],
+    },
+    {
+      id: 4,
+      text: "Які у вас інтереси та пристрасті?",
+      answers: ["Технології", "Бізнес", "Наука", "Мистецтво", "Спорт"],
+    },
+    {
+      id: 5,
+      text: "Ви готові працювати самостійно чи віддаєте перевагу командній роботі?",
+      answers: ["Самостійно", "У команді", "Залежить від проєкту"],
+    },
+    {
+      id: 6,
+      text: "Яку проблему ви хочете вирішити?",
+      answers: ["Покращити життя людей", "Змінити індустрію", "Заробити гроші", "Не знаю"],
+    },
+    {
+      id: 7,
+      text: "Де ви плануєте запускати стартап – у своєму регіоні чи глобально?",
+      answers: ["Локально", "Глобально", "Поки не вирішив"],
+    },
+    {
+      id: 8,
+      text: "Скільки часу ви готові інвестувати у стартап?",
+      answers: ["Повний робочий день", "Половину дня", "Кілька годин на тиждень"],
+    },
+    {
+      id: 9,
+      text: "Який у вас рівень знань про бізнес та підприємництво?",
+      answers: ["Високий", "Середній", "Початковий", "Жодних"],
+    },
+    {
+      id: 10,
+      text: "Яка ваша улюблена книга?",
+      answers: ["Бізнес-література", "Наукова фантастика", "Художня література", "Не люблю читати"],
+    },
   ];
 
-  // Виконуємо запит лише один раз при завантаженні компонента
-  useEffect(() => {
-    fetch('localhost:5000/api/question ', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt: "Яка погода сьогодні?",
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setGptResponse(data.response); // зберігаємо відповідь GPT
-      })
-      .catch((error) => console.error('Error:', error));
-  }, []); // Порожній масив залежностей, щоб запит виконувався тільки один раз
+  const [questionsIndex, setQuestionsIndex] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); // Инициализируем navigate
+
+  const handleAnswerClick = (answer) => {
+    dispatch(setSelectedAnswers({ questionId: questionsIndex, answer }));
+    if (questionsIndex < questions.length - 1) {
+      setQuestionsIndex(questionsIndex + 1);
+    } else {
+      setIsFinished(true);
+      // После завершения теста перенаправляем на страницу с результатами
+      navigate('/happy'); // Переход на компонент Result
+    }
+  };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white text-center px-4 relative">
-      {/* Лого в верхньому лівому кутку */}
+    <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white text-center px-4">
+      {/* Логотип */}
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 100 }}
-        className="absolute top-4 left-4 text-xl font-bold md:text-2xl lg:text-3xl"
+        className="absolute top-4 left-4 text-xl font-bold"
       >
         StartapsAi
       </motion.div>
 
-      {/* Заголовок */}
-      <motion.h1
-        initial={{ opacity: 0, y: -50, scale: 0.8 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 1.2, type: "spring", stiffness: 100 }}
-        className="text-3xl sm:text-4xl md:text-5xl font-bold drop-shadow-lg"
-      >
-        В якій сфері ви хочете розпочати свій стартап?
-      </motion.h1>
-
-      {/* Варіанти відповідей */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{
-          duration: 0.8,
-          delay: 0.8,
-          type: "spring",
-          stiffness: 100,
-        }}
-        className="mt-8 space-y-4 w-full max-w-md sm:w-11/12 md:w-9/12 lg:w-7/12 xl:w-5/12"
-      >
-        {staticAnswer.map((item, index) => (
-          <motion.button
-            key={index}
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full px-4 py-2 text-lg bg-white text-blue-700 font-semibold rounded-xl shadow-md hover:bg-gray-200 transition"
-            onClick={() => setOtherAnswer(`${item}`)} // Логування в консоль
+      {/* Отображаем вопросы или финальное сообщение */}
+      {!isFinished ? (
+        <>
+          <motion.h1
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, type: "spring", stiffness: 100 }}
+            className="text-3xl font-bold"
           >
-            {item}
-          </motion.button>
-        ))}
+            {questions[questionsIndex].text}
+          </motion.h1>
 
-        {/* Поле для власної відповіді */}
-        <motion.input
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          value={otherAnswer}
-          onChange={handleChange}
-          placeholder="Ваша власна відповідь"
-          className="w-full mt-4 px-4 py-2 bg-transparent border border-white rounded-xl text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-        />
-      </motion.div>
-
-      {/* Виведення відповіді від GPT, якщо вона є */}
-      {gptResponse && (
-        <div className="mt-4 text-xl text-white">
-          Відповідь від GPT: {gptResponse}
-        </div>
-      )}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.8,
+              type: "spring",
+              stiffness: 100,
+            }}
+            className="mt-8 space-y-4 w-full max-w-md"
+          >
+            {questions[questionsIndex].answers.map((answer, index) => (
+              <motion.button
+                key={index}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full px-4 py-2 text-lg font-semibold rounded-xl bg-white text-blue-700 hover:bg-gray-200"
+                onClick={() => handleAnswerClick(answer)}
+              >
+                {answer}
+              </motion.button>
+            ))}
+          </motion.div>
+        </>
+      ) : null}
     </div>
   );
 }
