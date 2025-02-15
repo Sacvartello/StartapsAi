@@ -93,7 +93,7 @@ export default function Result() {
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            <div className="w-12 h-12 border-4 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-t-transparent border-blue-600 rounded-full animate-spin "></div>
           </motion.div>
         )}
       </motion.div>
