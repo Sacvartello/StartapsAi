@@ -17,8 +17,7 @@ export default function Result() {
 
   useEffect(() => {
     console.log(
-      "🚀 Отправляю запрос с prompt:",
-      JSON.stringify({ prompt: "Яка погода сьогодні?" })
+      "🚀 Отправляю запрос с prompt:"
     );
 
     fetch("http://localhost:5000/api/question", {

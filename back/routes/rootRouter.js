@@ -26,7 +26,7 @@ rootRouter.use((req, res, next) => {
 });
 
 // ✅ Маршрут для обработки сообщений
-rootRouter.post('/result', createMessage);
+rootRouter.post('/question', createMessage);
 rootRouter.post('/trends', createTrends)
 
 console.log('✅ Маршрут /api/result зареєстрований');

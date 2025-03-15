@@ -4,10 +4,10 @@ const searchTerm = 'cybersecurity'; // Тема, яку хочеш переві�
 module.exports.createMessage = async (req, res, next) => {
     try {
         console.log('Запрос получен');
-        console.log("📩 Получен запрос с данными:", req.body);
         const { prompt } = req.body;
+        console.log(req.body);
+        console.log("📩 Получен запрос с данными:", req.body);
         console.log('prompt:', prompt);
-
         const openai = req.openai; // ✅ Убеждаемся, что openai передаётся
 
         if (!openai) {
