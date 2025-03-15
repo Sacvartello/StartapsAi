@@ -4,6 +4,7 @@ const searchTerm = 'cybersecurity'; // Тема, яку хочеш переві�
 module.exports.createMessage = async (req, res, next) => {
     try {
         console.log('Запрос получен');
+        console.log("📩 Получен запрос с данными:", req.body);
         const { prompt } = req.body;
         console.log('prompt:', prompt);
 
@@ -15,7 +16,7 @@ module.exports.createMessage = async (req, res, next) => {
 
         const response = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
-            messages: [{ role: 'user', content: 'do you have hobby' }]
+            messages: [{ role: 'user', content: prompt }]
         });
 
         res.json(response.choices[0].message);
